@@ -8,3 +8,5 @@ apt-get install amass
 sudo docker run -it -d -p 5000:5000 test
 
 https://www.daehee.com/oneforall/
+
+install oneforall and run

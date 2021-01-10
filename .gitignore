@@ -1,0 +1,4 @@
+api/output
+api/*.pyc
+*.pyc
+api/tools/OneForAll

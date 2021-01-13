@@ -2,3 +2,6 @@ api/output
 api/*.pyc
 *.pyc
 api/tools/OneForAll
+*.log
+*.rdb
+api/*.txt

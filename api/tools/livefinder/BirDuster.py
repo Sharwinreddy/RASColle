@@ -43,6 +43,7 @@ def _fetch_url(domain,ports, headers, ssl_verify=True, write_response=False, tim
     openports=[]
     responsecode=[]
     urls=[]
+    screenshotspath=[]
     for port in ports:
         surl="https://%s:%s/" % (domain, port)
         url="http://%s:%s/" % (domain, port)
@@ -52,20 +53,22 @@ def _fetch_url(domain,ports, headers, ssl_verify=True, write_response=False, tim
             responsecode.append(str(site_request.status_code))
             print(surl)
             urls.append(surl)
+            screenshotspath.append('https.'+domain+'.'+port+'..png')
         except:
             try:
                 site_request = requests.get(url, headers=headers, verify=ssl_verify)
                 openports.append(port)
                 responsecode.append(str(site_request.status_code))
                 urls.append(url)
+                screenshotspath.append('https.'+domain+'.'+port+'..png')
                 print(url)
             except:
                 pass
     live=""
     if len(openports)!=0:
-        FOUND.append([domain,openports,urls,responsecode,'live'])
+        FOUND.append([domain,openports,urls,responsecode,'live',screenshotspath])
     else:
-        FOUND.append([domain,openports,urls,responsecode,'dead'])
+        FOUND.append([domain,openports,urls,responsecode,'dead',screenshotspath])
     sys.stdout.flush()
 
 def parse_arguemnts():
@@ -178,7 +181,7 @@ def main():
 
     # Write output to file
     with open(args.output, 'w', newline='') as csvfile:
-        fieldnames = ['Domain', 'Ports','Urls','Response','Status']
+        fieldnames = ['Domain', 'Ports','Urls','Response','Status','Screenshots']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         print(FOUND)
         writer.writeheader()
@@ -186,13 +189,16 @@ def main():
             tports=""
             turls=""
             tresponsecode=""
+            tspath=""
             for i in item[1]:
                 tports=tports+"\n"+str(i)
             for i in item[2]:
                 turls=turls+"\n"+str(i)
             for i in item[3]:
                 tresponsecode=tresponsecode+"\n"+str(i)
-            thisItem = {'Domain': item[0], 'Ports':tports,'Urls':turls,'Response':tresponsecode,'Status':item[4]}
+            for i in tspath:
+                tspath=tspath+","+str(i)
+            thisItem = {'Domain': item[0], 'Ports':tports,'Urls':turls,'Response':tresponsecode,'Status':item[4],'Screenshots':tspath}
             writer.writerow(thisItem)
 
     _print_succ("Wrote all items to file '%s'." % args.output)

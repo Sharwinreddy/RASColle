@@ -1,0 +1,25 @@
+amass enum -passive -d owasp.org  -o temp.txt  -->amass scan
+python3 tools/Sublist3r/subdomain.py  gg.com  -->sublister
+cat finn.no.txt | python3 tools/smuggler/smuggler.p -->smuggler
+python3 GitDorker.py -q tesla -tf token.txt -d Dorks/alldorks.txt -o tesla2 -e -->git recon
+
+
+FROM python:3-alpine
+
+RUN apk add --no-cache python3-dev \
+    && pip3 install --upgrade pip
+
+WORKDIR /app
+
+COPY . /app
+
+RUN pip --no-cache-dir install -r requirements.txt
+
+EXPOSE 5000
+
+ENTRYPOINT ["python3"]
+CMD ["app.py"]
+
+
+
+sudo docker rmi -f $(sudo docker images -a -q)

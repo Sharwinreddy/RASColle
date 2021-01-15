@@ -1,12 +1,12 @@
 import os,sys
 
-os.system("amass enum -passive -d "+str(sys.argv[1])+" -o temp1.txt")
-os.system("python3 tools/Sublist3r/subdomain.py "+str(sys.argv[1]))
-os.system("python3 tools/OneForAll/oneforall.py --target "+str(sys.argv[1])+" --fmt json run")
-os.system("cat tools/OneForAll/results/"+str(sys.argv[1])+".json | jq '.[].subdomain' | sed 's/\"//g' | sort -u > temp3.txt")
+#os.system("amass enum -passive -d "+str(sys.argv[1])+" -o temp1.txt")
+#os.system("python3 tools/Sublist3r/subdomain.py "+str(sys.argv[1]))
+os.system("python3 tools/OneForAll/oneforall.py --target "+str(sys.argv[1])+" --fmt csv run")
+#os.system("cat tools/OneForAll/results/"+str(sys.argv[1])+".csv") # | jq '.[].subdomain' | sed 's/\"//g' | sort -u > temp3.txt")
 
 filenames = ['temp1.txt', 'temp2.txt', 'temp3.txt']
-
+'''
 try:
     with open('temp4.txt', 'w') as outfile:
         for names in filenames:
@@ -27,8 +27,10 @@ try:
 except:
     print('failed amass')
     os.rename('temp2.txt',str(sys.argv[1])+".txt")
-os.system("python3 tools/livefinder/BirDuster.py -P tools/livefinder/ports.txt -t 10 -i -l "+ str(sys.argv[1])+".txt "+str(sys.argv[1]))
+'''
+#os.system("python3 tools/livefinder/BirDuster.py -P tools/livefinder/ports.txt -t 10 -i -l "+ str(sys.argv[1])+".txt "+str(sys.argv[1]))
 os.system("mkdir output/"+str(sys.argv[2]))
-os.system("mv "+str(sys.argv[1])+".txt "+" output/"+str(sys.argv[2])+"/")
-os.system("mv "+str(sys.argv[1])+".csv "+" output/"+str(sys.argv[2])+"/")
+os.system("mv tools/OneForAll/results/"+str(sys.argv[1])+".csv output/"+str(sys.argv[2])+"/")
+#os.system("mv "+str(sys.argv[1])+".txt "+" output/"+str(sys.argv[2])+"/")
+#os.system("mv "+str(sys.argv[1])+".csv "+" output/"+str(sys.argv[2])+"/")
 os.system("python3 screenshot.py "+str(sys.argv[1])+" "+str(sys.argv[2]))

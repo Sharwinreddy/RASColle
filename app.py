@@ -66,7 +66,7 @@ def getOutput(projectnumber,subdomain):
 @app.route('/<projectnumber>/<subdomain>', methods=['GET','POST'])
 def login(projectnumber,subdomain):
 
-    return render_template('tables_dynamic.html',data=getOutput(projectnumber,subdomain),pnumber=projectnumber)
+    return render_template('tables_dynamic.html',data=getOutput(projectnumber,subdomain),pnumber=projectnumber,sub=subdomain)
 
 if __name__ == '__main__':
    app.run(debug = True)

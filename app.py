@@ -57,14 +57,16 @@ def scanstatus(task_id):
         }
     return jsonify(response)
 #getting data to populate the output
-def getOutput(projrctnumber):
-    with open('file.csv', newline='') as f:
-    reader = csv.reader(f)
-    data = list(reader)
-@app.route('/output/<projectnumber>', methods=['GET','POST'])
-def login(projectnumber):
+def getOutput(projectnumber,subdomain):
+    with open("static/output/"+projectnumber+"/"+subdomain+".csv", newline='') as f:
+        reader = csv.reader(f)
+        data = list(reader)
+    return data
 
-    return render_template('tables_dynamic.html')
+@app.route('/<projectnumber>/<subdomain>', methods=['GET','POST'])
+def login(projectnumber,subdomain):
+
+    return render_template('tables_dynamic.html',data=getOutput(projectnumber,subdomain),pnumber=projectnumber)
 
 if __name__ == '__main__':
    app.run(debug = True)

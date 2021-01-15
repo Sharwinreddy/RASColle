@@ -11,23 +11,23 @@
 
     <!-- Bootstrap -->
     <link href="cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
-    <link href="static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
-    <link href="static/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <link href="../static/vendors/nprogress/nprogress.css" rel="stylesheet">
     <!-- iCheck -->
-    <link href="static/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link href="../static/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
     <!-- Datatables -->
 
-    <link href="static/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
-    <link href="static/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
-    <link href="static/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
-    <link href="static/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
-    <link href="static/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+    <link href="../static/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="../static/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+    <link href="../static/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+    <link href="../static/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+    <link href="../static/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
-    <link href="static/build/css/custom.min.css" rel="stylesheet">
+    <link href="../static/build/css/custom.min.css" rel="stylesheet">
   </head>
 
   <body class="nav-md">
@@ -44,7 +44,7 @@
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
-                <img src="static/images/img.jpg" alt="..." class="img-circle profile_img">
+                <img src="../static/images/img.jpg" alt="..." class="img-circle profile_img">
               </div>
               <div class="profile_info">
                 <span>Welcome,</span>
@@ -188,7 +188,7 @@
                 <ul class=" navbar-right">
                   <li class="nav-item dropdown open" style="padding-left: 15px;">
                     <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                      <img src="static/images/img.jpg" alt="">John Doe
+                      <img src="../static/images/img.jpg" alt="">John Doe
                     </a>
                     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                       <a class="dropdown-item"  href="javascript:;"> Profile</a>
@@ -255,6 +255,8 @@
                         <tr>
                           <th>Subdomain</th>
                           <th>Ports</th>
+                          <th>URLS</th>
+                          <th>Response</th>
                           <th>Status</th>
                           <th>Screenshots</th>
                         </tr>
@@ -262,11 +264,28 @@
                       <tbody>
                         <!-- Data goes here -->
                         {% for item in data %}
+                        {% if loop.index != 1 %}
                         <tr>
-                            <td>{{item[0]}}</td>
-                            <td>{{item[1]}}</td>
+                          <td>{{item[0]}}</td>
+                          <td>{{item[1]}}</td>
                         	<td>{{item[2]}}</td>
+                          <td>{{item[3]}}</td>
+                          <td>{{item[4]}}</td>
+                          <td>
+                          {% set paths= item[5].split(',') %}
+                          {% set c = loop.index-1  %}
+                          {% set c = c|string %}
+                          {% for path in paths %}
+                          {% if path != '' %}
+
+                          {% set tpath="../static/output/"+pnumber+"/"+c+"/screenshots/"+path %}
+                          <img src="{{tpath}}"/>
+                          {% endif %}
+                          {% endfor %}
+                          </td>
                         </tr>
+                        {% endif %}
+
                         {% endfor %}
                       </tbody>
 
@@ -296,34 +315,34 @@
     </div>
 
     <!-- jQuery -->
-    <script src="static/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="../static/vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
-   <script src="static/vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+   <script src="../static/vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <!-- FastClick -->
-    <script src="static/vendors/fastclick/lib/fastclick.js"></script>
+    <script src="../static/vendors/fastclick/lib/fastclick.js"></script>
     <!-- NProgress -->
-    <script src="static/vendors/nprogress/nprogress.js"></script>
+    <script src="../static/vendors/nprogress/nprogress.js"></script>
     <!-- iCheck -->
-    <script src="static/vendors/iCheck/icheck.min.js"></script>
+    <script src="../static/vendors/iCheck/icheck.min.js"></script>
     <!-- Datatables -->
-    <script src="static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-    <script src="static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
-    <script src="static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
-    <script src="static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
-    <script src="static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
-    <script src="static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
-    <script src="static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-    <script src="static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
-    <script src="static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
-    <script src="static/vendors/jszip/dist/jszip.min.js"></script>
-    <script src="static/vendors/pdfmake/build/pdfmake.min.js"></script>
-    <script src="static/vendors/pdfmake/build/vfs_fonts.js"></script>
+    <script src="../static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="../static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="../static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="../static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="../static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="../static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="../static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="../static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="../static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="../static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="../static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="../static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+    <script src="../static/vendors/jszip/dist/jszip.min.js"></script>
+    <script src="../static/vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="../static/vendors/pdfmake/build/vfs_fonts.js"></script>
 
     <!-- Custom Theme Scripts -->
-    <script src="static/build/js/custom.min.js"></script>
+    <script src="../static/build/js/custom.min.js"></script>
 
   </body>
 </html>

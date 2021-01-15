@@ -196,7 +196,7 @@ def main():
                 turls=turls+"\n"+str(i)
             for i in item[3]:
                 tresponsecode=tresponsecode+"\n"+str(i)
-            for i in tspath:
+            for i in item[5]:
                 tspath=tspath+","+str(i)
             thisItem = {'Domain': item[0], 'Ports':tports,'Urls':turls,'Response':tresponsecode,'Status':item[4],'Screenshots':tspath}
             writer.writerow(thisItem)

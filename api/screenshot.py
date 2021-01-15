@@ -17,5 +17,5 @@ with open(csvpath, newline='') as csvfile:
             os.system('eyewitness --web --timeout 60 -f '+projectpath+'turls.txt -d '+projectpath+'temp'+' --no-prompt')
             os.system('mv -v '+projectpath+'temp/screens/* '+projectpath+str(count)+'/screenshots/')
             os.remove(projectpath+'turls.txt')
-os.system('mkdir ../static/output/'+str(projectnumber))
+
 os.system('cp -R output/'+str(projectnumber)+" ../static/output/"+str(projectnumber))

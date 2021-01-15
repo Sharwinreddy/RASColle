@@ -5,3 +5,4 @@ api/tools/OneForAll
 *.log
 *.rdb
 api/*.txt
+static/output/*

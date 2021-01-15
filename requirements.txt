@@ -20,3 +20,4 @@ requests
 Flask-Threads
 user_agent
 colorama
+celery

@@ -4,17 +4,18 @@ from flask import Flask, render_template, redirect, url_for, request, session
 from flask import send_file, send_from_directory, safe_join, abort
 import time
 from flaskthreads import AppContextThread
-from celery import Celery
+#from celery import Celery
 import os
 import csv
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'top-secret!'
 #celery configuration
-app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
-app.config['CELERY_RESULT_BACKEND'] = 'redis://localhost:6379/0'
+#app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
+#app.config['CELERY_RESULT_BACKEND'] = 'redis://localhost:6379/0'
 # Initialize Celery
-celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
-celery.conf.update(app.config)
+#celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
+#celery.conf.update(app.config)
+'''
 @celery.task()
 def runscan(domain):
     #self.update_state('started')
@@ -57,14 +58,15 @@ def scanstatus(task_id):
         }
     return jsonify(response)
 #getting data to populate the output
+'''
 def getOutput(projectnumber,subdomain):
-    with open("static/output/"+projectnumber+"/"+subdomain+".csv", newline='') as f:
+    with open("static/output/"+projectnumber+"/"+subdomain+".csv", newline='',encoding="utf-8") as f:
         reader = csv.reader(f)
         data = list(reader)
     return data
 
 @app.route('/<projectnumber>/<subdomain>', methods=['GET','POST'])
-def login(projectnumber,subdomain):
+def output_result(projectnumber,subdomain):
 
     return render_template('tables_dynamic.html',data=getOutput(projectnumber,subdomain),pnumber=projectnumber,sub=subdomain)
 

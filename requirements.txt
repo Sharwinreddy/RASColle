@@ -7,7 +7,7 @@ Jinja2==2.10
 MarkupSafe==1.1.1
 pytz==2018.5
 six==1.11.0
-Werkzeug==0.14.1
+Werkzeug==0.15.3
 argparse
 dnspython
 requests

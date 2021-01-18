@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{sub}}</title>
+    <title>Dashboard</title>
 
     <!-- Bootstrap -->
     <link href="cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
@@ -124,27 +124,84 @@
         <!-- /top navigation -->
 
         <!-- page content -->
+
         <div class="right_col" role="main">
+
           <div class="">
             <div class="page-title">
               <div class="title_left">
                 <h3><small>{{sub}}</small></h3>
               </div>
             </div>
+            <!-- Scan FOrm codde /-->
+            <div class="row">
+            						<div class="col-md-12 ">
 
-            <div class="clearfix"></div>
 
+
+
+            							<div class="x_panel" style="height: auto;">
+            								<div class="x_title">
+            									<h2>Enitiate a new scan <small>Click to validate</small></h2>
+            									<ul class="nav navbar-right panel_toolbox">
+            										<li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
+            										</li>
+
+
+            									</ul>
+            									<div class="clearfix"></div>
+            								</div>
+                            <div class="x_content">
+
+                              <!-- start form for validation -->
+                              <form method="post" align="center" action="/scan">
+ 	 <div class="form-group" >
+       <br>
+     	<input class="form-control" type="text" name="domain" value="{{
+           request.form.domain }}" placeholder="Domain" required="required" />
+ 		  </div>
+
+      <br />
+                                 <label>Config:</label>
+                                 <p style="padding: 5px;">
+                                   <input type="checkbox" name="screenshots" id="hobby1" value="1" data-parsley-mincheck="0" required class="flat" /> screenshots
+                                   <br />
+
+                                   <input type="checkbox" name="nabbu" id="hobby2" value="1" class="flat" /> Nabbu(Commig soon)
+                                   <br />
+
+                                   <input type="checkbox" name="smuggler" id="hobby3" value="1" class="flat" /> Smuggler(Coming soon)
+                                   <br />
+
+                                   <input type="checkbox" name="ffuf" id="hobby4" value="1" class="flat" /> FFUF(Coming soon)
+                                   <br />
+ 		  <br/>
+         <button type="submit" class="btn btn-primary ">Scan</button>
+     </form>
+                              <!-- end form for validations -->
+
+                            </div>
+            							</div>
+
+
+            						</div>
+
+
+
+
+
+            					</div>
+            <!-- Statas/-->
             <div class="row">
 
 
               <div class="col-md-12 col-sm-12 ">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2><small>Output</small></h2>
+                    <h2>Scans</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
                       </li>
                     </ul>
                     <div class="clearfix"></div>
@@ -160,47 +217,30 @@
                       <thead>
                         <tr>
                           <th>Subdomain</th>
-                          <th>URL</th>
-                          <th>Port</th>
-                          <th>CNAME</th>
-                          <th>IP</th>
-                          <th>CIDR</th>
+                          <th>Total</th>
+                          <th>Active</th>
+                          <th>Start</th>
+                          <th>End</th>
                           <th>Status</th>
-                          <th>Banner</th>
-                          <th>Live</th>
-                          <th>Screenshot</th>
+                          <th>Config Used</th>
                         </tr>
                       </thead>
                       <tbody>
                         <!-- Data goes here -->
-
-
-                        {% for item in data %}
-                        {% if loop.index != 1 %}
+                        {% for item in scans %}
                         <tr>
-                          <td>{{item[5]}}</td>
-                          <td><a href="{{item[4]}} width="10" height="10"" >{{item[4]}}</a></td>
-                          <td>{{item[11]}}</td>
-                        	<td>{{item[7]}}</td>
-                          <td>{{item[8]}}</td>
-                          <td>{{item[16]}}</td>
-                          <td>{{item[12]}}</td>
-                          <td>{{item[15]}}</td>
-                          {% if item[1]=='1' %}
-                          <td>Alive</td>
-                          {% else %}
-                          <td>Dead</td>
-                          {% endif %}
-                          <td>
-                          {% set path= item[4].replace('://','.')+'.png' %}
+                            <td><a href="/{{item[0]}}/{{item[7]}}">{{item[7]}}</a></td>
+                            <td>{{item[1]}}</td>
+                            <td>{{item[2]}}</td>
+                            <td>{{item[3]}}</td>
+                            <td>{{item[4]}}</td>
+                            <td>{{item[5]}}</td>
+                            <td>{{item[6]}}</td>
 
-                          {% set tpath="../static/output/"+pnumber+"/screenshots/"+path %}
-                          <img src="{{tpath}}"/>
-                          </td>
+
                         </tr>
-                        {% endif %}
-
                         {% endfor %}
+
                       </tbody>
 
                     </table>
@@ -210,7 +250,50 @@
                 </div>
               </div>
             </div>
-                </div>
+
+            <br/>
+            <br/>
+
+
+
+
+          </div>
+          <div class="row" style="display: inline-block;">
+                      <div class="top_tiles">
+                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 ">
+                          <div class="tile-stats">
+                            <div class="icon"><i class="fa fa-caret-square-o-right"></i></div>
+                            <div class="count">{{total}}</div>
+                            <h3>Total Subdomains</h3>
+
+                          </div>
+                        </div>
+                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 ">
+                          <div class="tile-stats">
+                            <div class="icon"><i class="fa fa-comments-o"></i></div>
+                            <div class="count">{{live}}</div>
+                            <h3>Live</h3>
+                            <p>Lorem ipsum psdea itgum rixt.</p>
+                          </div>
+                        </div>
+                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 ">
+                          <div class="tile-stats">
+                            <div class="icon"><i class="fa fa-sort-amount-desc"></i></div>
+                            <div class="count">179</div>
+                            <h3>New Sign ups</h3>
+                            <p>Lorem ipsum psdea itgum rixt.</p>
+                          </div>
+                        </div>
+                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 ">
+                          <div class="tile-stats">
+                            <div class="icon"><i class="fa fa-check-square-o"></i></div>
+                            <div class="count">179</div>
+                            <h3>New Sign ups</h3>
+                            <p>Lorem ipsum psdea itgum rixt.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
               </div>
             </div>
           </div>

@@ -7,3 +7,4 @@ api/tools/OneForAll
 api/*.txt
 static/output/*
 certs/*
+*.db

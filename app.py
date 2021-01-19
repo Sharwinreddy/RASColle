@@ -18,7 +18,7 @@ celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
 celery.conf.update(app.config)
 
 @celery.task(bind=True)
-def runscan(self,domain):
+def runscan(self,domain,screenshots,nabbu):
     connection = sqlite3.connect("small_db.db")
     projectnumbersql = ''' select * from scans'''
     cursor = connection.cursor()
@@ -33,18 +33,29 @@ def runscan(self,domain):
     connection.commit()
     self.update_state('started subdomainscan')
     os.system("cd api && python3 allSub.py "+str(domain)+" "+projectnumber)#running subdomain scan
-    cursor.execute(statusupdate,['Sudomain Enumuration Done',projectnumber])
-    connection.commit()
-    self.update_state('started screenshots')
-    os.system("cd api && python3 screenshot.py "+str(domain)+" "+projectnumber)
+    if screenshots=="1":
+        cursor.execute(statusupdate,['Sudomain Enumuration Done',projectnumber])
+        connection.commit()
+        self.update_state('started screenshots')
+        os.system("cd api && python3 screenshot.py "+str(domain)+" "+projectnumber)
     cursor.execute(statusupdate,['alldone',projectnumber])
     connection.commit()
     self.update_state('all done')
-    return redirect(url_for('dashboard'))
+
 #running scan
 @app.route('/scan', methods=['GET','POST'])
 def scan():
-    task = runscan.apply_async(args=[str(request.form['domain'])])
+    screenshots='0'
+    nabbu='0'
+    try:
+        screenshots=str(request.form['screenshots'])
+    except:
+        screenshots="0"
+    try:
+        nabbu=str(request.form['nabbu'])
+    except:
+        nabbu="0"
+    task = runscan.apply_async(args=[str(request.form['domain']),screenshots,nabbu])
     print(str(task.id))
     return redirect(url_for('dashboard'))
 
@@ -64,8 +75,11 @@ def getOutput(projectnumber,subdomain):
 #scan_output
 @app.route('/<projectnumber>/<subdomain>', methods=['GET','POST'])
 def output_result(projectnumber,subdomain):
-
-    return render_template('tables_dynamic.html',data=getOutput(projectnumber,subdomain),pnumber=projectnumber,sub=subdomain)
+    try:
+        return render_template('tables_dynamic.html',data=getOutput(projectnumber,subdomain),pnumber=projectnumber,sub=subdomain)
+    except:
+        return redirect(url_for('dashboard'))
+    return 'never comes here:)'
 #404 render_template
 @app.errorhandler(404)
 def page_not_found(e):

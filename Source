@@ -11,3 +11,6 @@ https://www.daehee.com/oneforall/
 
 install oneforall and run
 sudo apt-get install redis-server
+
+Nabbu
+naabu-linux-amd64 /usr/local/bin/naa

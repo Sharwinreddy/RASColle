@@ -29,8 +29,8 @@ except:
     os.rename('temp2.txt',str(sys.argv[1])+".txt")
 '''
 #os.system("python3 tools/livefinder/BirDuster.py -P tools/livefinder/ports.txt -t 10 -i -l "+ str(sys.argv[1])+".txt "+str(sys.argv[1]))
-os.system("mkdir output/"+str(sys.argv[2]))
-os.system("mv tools/OneForAll/results/"+str(sys.argv[1])+".csv output/"+str(sys.argv[2])+"/")
+os.system("mkdir ../static/output/"+str(sys.argv[2]))
+os.system("mv tools/OneForAll/results/"+str(sys.argv[1])+".csv ../static/output/"+str(sys.argv[2])+"/")
 #os.system("mv "+str(sys.argv[1])+".txt "+" output/"+str(sys.argv[2])+"/")
 #os.system("mv "+str(sys.argv[1])+".csv "+" output/"+str(sys.argv[2])+"/")
-os.system("python3 screenshot.py "+str(sys.argv[1])+" "+str(sys.argv[2]))
+#os.system("python3 screenshot.py "+str(sys.argv[1])+" "+str(sys.argv[2]))

@@ -6,3 +6,5 @@ api/tools/OneForAll
 *.rdb
 api/*.txt
 static/output/*
+certs/*
+*.db

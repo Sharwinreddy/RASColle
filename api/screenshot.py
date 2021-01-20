@@ -2,7 +2,7 @@ import os,sys
 import csv
 
 projectnumber=str(sys.argv[2])
-projectpath='output/'+projectnumber+"/"
+projectpath='../static/output/'+projectnumber+"/"
 csvpath=projectpath+str(sys.argv[1])+".csv"
 os.system('mkdir '+projectpath+'temp')
 os.system('mkdir '+projectpath+'screenshots')
@@ -34,4 +34,4 @@ with open(str(sys.argv[1])+'_urls.txt', "w") as myfile:
 os.system('mv '+str(sys.argv[1])+'_urls.txt '+projectpath)
 os.system('eyewitness --web --timeout 60 --threads 5 --max-retries 2 -f '+projectpath+str(sys.argv[1])+'_urls.txt -d '+projectpath+'temp'+' --no-prompt')
 os.system('mv -v '+projectpath+'temp/screens/* '+projectpath+'screenshots/')
-os.system('cp -R output/'+str(projectnumber)+" ../static/output/"+str(projectnumber))
+#os.system('cp -R output/'+str(projectnumber)+" ../static/output/"+str(projectnumber))

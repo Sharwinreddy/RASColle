@@ -8,6 +8,7 @@ from celery import Celery
 import os
 import csv
 import sqlite3
+import json
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'top-secret!'
 #celery configuration
@@ -18,7 +19,7 @@ celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
 celery.conf.update(app.config)
 
 @celery.task(bind=True)
-def runscan(self,domain,screenshots,nabbu):
+def runscan(self,domain,screenshots,nabbu,nuclie):
     connection = sqlite3.connect("small_db.db")
     projectnumbersql = ''' select * from scans'''
     cursor = connection.cursor()
@@ -34,10 +35,15 @@ def runscan(self,domain,screenshots,nabbu):
     self.update_state('started subdomainscan')
     os.system("cd api && python3 allSub.py "+str(domain)+" "+projectnumber)#running subdomain scan
     if screenshots=="1":
-        cursor.execute(statusupdate,['Sudomain Enumuration Done',projectnumber])
-        connection.commit()
+
         self.update_state('started screenshots')
         os.system("cd api && python3 screenshot.py "+str(domain)+" "+projectnumber)
+    if nabbu=="1":
+        self.update_state('started naabu')
+        os.system("cd api && python3 naabu.py "+str(domain)+" "+projectnumber)
+    if nuclie=="1":
+        self.update_state('started nuclie')
+        os.system("cd api && python3 nuclie.py "+str(domain)+" "+projectnumber)
     cursor.execute(statusupdate,['alldone',projectnumber])
     connection.commit()
     self.update_state('all done')
@@ -47,6 +53,7 @@ def runscan(self,domain,screenshots,nabbu):
 def scan():
     screenshots='0'
     nabbu='0'
+    nuclie='0'
     try:
         screenshots=str(request.form['screenshots'])
     except:
@@ -55,7 +62,11 @@ def scan():
         nabbu=str(request.form['nabbu'])
     except:
         nabbu="0"
-    task = runscan.apply_async(args=[str(request.form['domain']),screenshots,nabbu])
+    try:
+        nuclie=str(request.form['nuclie'])
+    except:
+        nuclie="0"
+    task = runscan.apply_async(args=[str(request.form['domain']),screenshots,nabbu,nuclie])
     print(str(task.id))
     return redirect(url_for('dashboard'))
 
@@ -72,13 +83,27 @@ def getOutput(projectnumber,subdomain):
         reader = csv.reader(f)
         data = list(reader)
     return data
+#getnuclieoutput
+def getnuclieoutput(projectnumber):
+    data=[]
+    try:
+        file1 = open('static/output/'+str(projectnumber)+'/nuclie.txt', 'r')
+        Lines = file1.readlines()
+        for line in Lines:
+            t=json.loads(str(line))
+            data.append(t)
+        print(data)
+        return data
+    except:
+        return data
+    return data
 #scan_output
 @app.route('/<projectnumber>/<subdomain>', methods=['GET','POST'])
 def output_result(projectnumber,subdomain):
     try:
-        return render_template('tables_dynamic.html',data=getOutput(projectnumber,subdomain),pnumber=projectnumber,sub=subdomain)
+        return render_template('tables_dynamic.html',data=getOutput(projectnumber,subdomain),pnumber=projectnumber,sub=subdomain,nuclie=getnuclieoutput(projectnumber))
     except:
-        return redirect(url_for('dashboard'))
+        return render_template('tables_dynamic.html',data=getOutput(projectnumber,subdomain),pnumber=projectnumber,sub=subdomain,nuclie=getnuclieoutput(projectnumber))
     return 'never comes here:)'
 #404 render_template
 @app.errorhandler(404)

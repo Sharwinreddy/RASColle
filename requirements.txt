@@ -20,4 +20,5 @@ requests
 Flask-Threads
 user_agent
 colorama
-celery
+redis
+gunicorn

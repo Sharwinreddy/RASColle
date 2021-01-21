@@ -16,7 +16,6 @@ RUN apt-get update && apt-get install -y \
     wget\
     nano
 RUN pip3 --no-cache-dir install -r requirements.txt
-RUN rm -r api/tools/OneForAll
 RUN cd api/tools/ && git clone https://github.com/shmilylty/OneForAll.git
 RUN pip3 --no-cache-dir install -r api/tools/Sublist3r/requirements.txt
 RUN pip3 --no-cache-dir install -r api/tools/OneForAll/requirements.txt
@@ -31,5 +30,20 @@ RUN apt update
 RUN apt -y  install eyewitness
 RUN apt -y install amass
 
+RUN apt-get install -y redis-server
+RUN pip3 --no-cache-dir install  celery
+RUN export LC_ALL=C.UTF-8
+RUN export LANG=C.UTF-8
+
+RUN cp api/tools/nabbu/naabu-linux-amd64 /usr/local/bin/naabu
+
+RUN cp api/tools/nuclei/nuclei /usr/local/bin/
+
+RUN tar -C /usr/local -xzf api/tools/go/go1.6.linux-amd64.tar.gz
+RUN export PATH=$PATH:/usr/local/go/bin
+
+RUN mkdir certs
+RUN cd certs && openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365 -subj "/C=na/ST=na/L=nad/O=na/CN=na.com"
+RUN cd static && mkdir output
 
 EXPOSE 5000

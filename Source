@@ -14,3 +14,8 @@ sudo apt-get install redis-server
 
 Nabbu
 naabu-linux-amd64 /usr/local/bin/naa
+
+sudo docker run -it -d -p 5000:5000 tes
+
+apt-get install -y locales
+pip3 install celery

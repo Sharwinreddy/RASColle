@@ -23,3 +23,6 @@ CMD ["app.py"]
 
 
 sudo docker rmi -f $(sudo docker images -a -q)
+
+
+cd &&  \ cd python-sandbox && LC_ALL=C.UTF-8 LANG=C.UTF-8 pipenv install --three my-dependency
